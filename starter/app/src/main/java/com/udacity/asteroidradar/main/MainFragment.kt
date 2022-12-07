@@ -49,9 +49,9 @@ class MainFragment : Fragment(), MenuProvider {
 
     override fun onMenuItemSelected(menuItem: MenuItem): Boolean {
         when(menuItem.itemId){
-            R.id.show_week->{}
-            R.id.show_today->{}
-            R.id.show_saved->{}
+            R.id.show_week->{viewModel.getWeek()}
+            R.id.show_today->{viewModel.getToday()}
+            R.id.show_saved->{viewModel.getAll()}
 
         }
         return true

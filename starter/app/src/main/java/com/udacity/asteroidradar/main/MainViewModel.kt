@@ -3,6 +3,7 @@ package com.udacity.asteroidradar.main
 import android.app.Application
 import androidx.lifecycle.*
 import com.udacity.asteroidradar.PictureOfDay
+import com.udacity.asteroidradar.api.getSeventhDay
 import com.udacity.asteroidradar.api.retrofit
 import com.udacity.asteroidradar.data_base.AsteroidDB
 import com.udacity.asteroidradar.data_base.AsteroidDTO
@@ -52,6 +53,37 @@ class MainViewModel(private val db: AsteroidDB, app: Application) : AndroidViewM
             _pictureOfDay.value = pictureOfDay
         }
 
+    }
+
+
+
+    fun getWeek() {
+        viewModelScope.launch {
+            db.dao.getAsteroidsByCloseApproachDate(com.udacity.asteroidradar.api.getToday(), getSeventhDay())
+                .collect { asteroids ->
+                    _asteroidList.value = asteroids
+                }
+        }
+    }
+
+    fun getToday() {
+        viewModelScope.launch {
+            db.dao.getAsteroidsByCloseApproachDate(
+                com.udacity.asteroidradar.api.getToday(),
+                com.udacity.asteroidradar.api.getToday()
+            )
+                .collect { asteroids ->
+                    _asteroidList.value = asteroids
+                }
+        }
+    }
+
+    fun getAll() {
+        viewModelScope.launch {
+            db.dao.getAllAsteroids().collect { asteroids ->
+                _asteroidList.value = asteroids
+            }
+        }
     }
 
 }
